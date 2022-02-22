@@ -27,7 +27,8 @@ func CheckUser(name string) (code int) {
 
 // 新增用户
 func CreateUser(data *User) int {
-	data.Password = ScryptPw(data.Password)
+	// 此处密码加密 改为了下面的钩子函数 BeforeSave
+	//data.Password = ScryptPw(data.Password)
 	err := db.Create(&data).Error
 	if err != nil {
 		return errmsg.ERROR
@@ -46,7 +47,15 @@ func GetUsers(pageSize int, pageNum int) []User {
 	return users
 }
 
-// 密码加密
+// ------- 密码加密 ------------
+// 此处调用钩子函数，在存入数据库之前做 密码加密
+// http://v1.gorm.io/zh_CN/docs/hooks.html
+// 不需要我们调用，存储前会自动调用
+func (u *User) BeforeSave() {
+	u.Password = ScryptPw(u.Password)
+}
+
+// 密码加密功能
 func ScryptPw(password string) string {
 	const KeyLen = 10
 	salt := make([]byte, 8)
@@ -57,4 +66,30 @@ func ScryptPw(password string) string {
 	}
 	fpw := base64.StdEncoding.EncodeToString(HashPw)
 	return fpw
+}
+
+// --------- 删除用户 ---------
+func DeleteUser(id int) int {
+	var user User
+	err = db.Where("id = ?", id).Delete(&user).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCES
+}
+
+// --------- 编辑用户 --------
+// 此部分只能编辑基本信息，更改密码需要独立功能
+// http://v1.gorm.io/zh_CN/docs/update.html
+// 结构体更新形式，0值无法更新（也就是role字段不能更新），因此采用 map 方式更新
+func EditUser(id int, data *User) int {
+	var user User // 相当于 var user = User{}  简化了
+	var maps = make(map[string]interface{})
+	maps["username"] = data.Username
+	maps["role"] = data.Role
+	err = db.Model(&user).Where("id = ?", id).Update(maps).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCES
 }
