@@ -74,6 +74,7 @@ func DeleteUser(c *gin.Context) {
 
 // 编辑用户
 // todo：问题：只有更新用户名才能更新，因为是查询用户名是否存在
+// todo: 只更新用户信息，不更新用户名情况
 func EditUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)

@@ -15,7 +15,7 @@ type User struct {
 	Role     int    `gorm:"type:int" json:"role"`
 }
 
-// 查询用户是否存在
+// -------- 查询用户是否存在 ---------
 func CheckUser(name string) (code int) {
 	var users User
 	db.Select("id").Where("username = ?", name).First(&users)
@@ -25,7 +25,7 @@ func CheckUser(name string) (code int) {
 	return errmsg.SUCCES
 }
 
-// 新增用户
+// --------- 新增用户 ----------
 func CreateUser(data *User) int {
 	// 此处密码加密 改为了下面的钩子函数 BeforeSave
 	//data.Password = ScryptPw(data.Password)
@@ -36,7 +36,7 @@ func CreateUser(data *User) int {
 	return errmsg.SUCCES
 }
 
-// 查询用户列表
+// ----------- 查询用户列表 -----------
 // 为了防止获取过多，拖慢，所以分页获取
 func GetUsers(pageSize int, pageNum int) []User {
 	var users []User
