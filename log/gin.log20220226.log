@@ -1,0 +1,2 @@
+time="2022-02-26 18:35:02" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=204 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize&pagenum" SpendTime="10 ms" Status=200
+time="2022-02-26 18:39:05" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=204 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize&pagenum" SpendTime="4 ms" Status=200
