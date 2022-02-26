@@ -3,6 +3,7 @@ package v1
 import (
 	"ginblog/model"
 	"ginblog/utils/errmsg"
+	"ginblog/utils/validator"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -19,7 +20,18 @@ func UserExist(c *gin.Context) {
 func AddUser(c *gin.Context) {
 	// 先查询用户是否存在
 	var data model.User
+	var msg string
 	_ = c.ShouldBindJSON(&data)
+	// 添加用户前进行 信息验证
+	// 通过设置 model User 的 validate tag 进行格式要求，最小不能少于 最大不能多于多少个字符等
+	msg, code = validator.Validate(&data)
+	if code != errmsg.SUCCES {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"message": msg,
+		})
+		return
+	}
 	code = model.CheckUser(data.Username)
 	// 创建用户
 	if code == errmsg.SUCCES {
@@ -50,11 +62,12 @@ func GetUsers(c *gin.Context) {
 	if pageNum == 0 {
 		pageNum = -1
 	}
-	data := model.GetUsers(pageSize, pageNum)
+	data, total := model.GetUsers(pageSize, pageNum)
 	code = errmsg.SUCCES
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    data,
+		"total":   total,
 		"message": errmsg.GetErrMsg(code),
 	})
 }

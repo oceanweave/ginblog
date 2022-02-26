@@ -33,13 +33,15 @@ func CreateCate(data *Category) int {
 
 // --------- 查询分类列表 ----------
 // 为了防止获取过多，拖慢，所以分页获取
-func GetCates(pageSize int, pageNum int) []Category {
+// 增加获取总数total，是为了之后更好分页，以及前端展示
+func GetCates(pageSize int, pageNum int) ([]Category, int) {
 	var cates []Category
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates).Error
+	var total int
+	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+		return nil, 0
 	}
-	return cates
+	return cates, total
 }
 
 // -------- todo: 查询分类下的所有文章 ---------

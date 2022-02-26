@@ -1,2 +1,6 @@
-time="2022-02-26T18:39:05+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=204 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize&pagenum" SpendTime="4 ms" Status=200
-
+time="2022-02-26T19:46:55+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=542 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/users?pagesize&pagenum" SpendTime="4 ms" Status=200
+time="2022-02-26T19:47:23+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=99 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/categorys?pagesize&pagenum" SpendTime="7 ms" Status=200
+time="2022-02-26T19:47:31+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=321 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path="/api/v1/arts?pagesize&pagenum" SpendTime="5 ms" Status=200
+time="2022-02-26T19:47:38+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=49 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=GET Path=/api/v1/arts/cate/2222222 SpendTime="2 ms" Status=200
+piPOST Runtime +https://www.apipost.cn" DataSize=199 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=POST Path=/api/v1/user/add SpendTime="3 ms" Status=200
+time="2022-02-26T19:24:03+08:00" level=info Agent="ApiPOST Runtime +https://www.apipost.cn" DataSize=252 HostName=dufengyangdeMBP.lan IP=127.0.0.1 Method=POST Path=/api/v1/user/add SpendTime="5 ms" Status=200

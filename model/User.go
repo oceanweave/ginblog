@@ -10,9 +10,11 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"type:varchar(20);not null" json:"username"`
-	Password string `gorm:"type:varchar(20);not null" json:"password"`
-	Role     int    `gorm:"type:int" json:"role"`
+	Username string `gorm:"type:varchar(20);not null" json:"username" validate:"required,min=4,max=12" label:"用户名"`
+	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=6,max=20" label:"密码"`
+	// 大于等于2 之前默认0是管理员 1 是阅读者 但在 validate中 默认0是空值
+	// 所以这里 gte=2 就是大于等于2，要所有都+1 就是 1是管理员  2是阅读者
+	Role int `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"角色码"`
 }
 
 // -------- 查询用户是否存在 ---------
@@ -38,13 +40,15 @@ func CreateUser(data *User) int {
 
 // ----------- 查询用户列表 -----------
 // 为了防止获取过多，拖慢，所以分页获取
-func GetUsers(pageSize int, pageNum int) []User {
+// 增加获取总数total，是为了之后更好分页，以及前端展示
+func GetUsers(pageSize int, pageNum int) ([]User, int) {
 	var users []User
-	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&users).Error
+	var total int
+	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&users).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+		return nil, 0
 	}
-	return users
+	return users, total
 }
 
 // ------- 密码加密 ------------

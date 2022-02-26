@@ -29,15 +29,17 @@ func CreateArt(data *Article) int {
 }
 
 // todo 查询分类下的所有文章
-func GetCateArts(id int, pageSize int, pageNum int) ([]Article, int) {
+// 增加获取文章总数total，是为了之后更好分页，以及前端展示
+func GetCateArts(id int, pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
 	// todo 查询不存在的分类，没有返回错误
 	// todo 先验证分类是否存在，不存在就报错
-	err = db.Preload("Category").Where("cid = ?", id).Find(&articleList).Limit(pageSize).Offset((pageNum - 1) * pageSize).Error
+	var total int
+	err = db.Preload("Category").Where("cid = ?", id).Find(&articleList).Limit(pageSize).Offset((pageNum - 1) * pageSize).Count(&total).Error
 	if err != nil {
-		return articleList, errmsg.ERROR_CATE_NOT_EXIST
+		return articleList, errmsg.ERROR_CATE_NOT_EXIST, 0
 	}
-	return articleList, errmsg.SUCCES
+	return articleList, errmsg.SUCCES, total
 }
 
 // todo 查询单个文章
@@ -52,15 +54,17 @@ func GetArtInfo(id int) (Article, int) {
 
 // --------- 查询文章列表 ----------
 // 为了防止获取过多，拖慢，所以分页获取
-func GetArts(pageSize int, pageNum int) ([]Article, int) {
+// 增加获取文章总数total，是为了之后更好分页，以及前端展示
+func GetArts(pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
+	var total int
 	// Preload 方法的参数应该是主结构体的字段名  主结构体 就是 父结构体
 	// http://v1.gorm.io/zh_CN/docs/preload.html
-	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Error
+	err = db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, errmsg.ERROR
+		return nil, errmsg.ERROR, 0
 	}
-	return articleList, errmsg.SUCCES
+	return articleList, errmsg.SUCCES, total
 }
 
 // --------- 删除文章 ---------
