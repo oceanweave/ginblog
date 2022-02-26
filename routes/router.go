@@ -25,6 +25,8 @@ func InitRouter() {
 		auth.POST("category/add", v1.AddCategory)
 		auth.PUT("category/:id", v1.EditCate)
 		auth.DELETE("category/:id", v1.DeleteCate)
+		// 上传文件
+		auth.POST("upload", v1.UpLoad)
 	}
 
 	// 不需要使用 token 的路由组
@@ -44,6 +46,7 @@ func InitRouter() {
 		routerV1.GET("categorys", v1.GetCates)
 		// 登录接口  会获取 token ，需要设置 bear token  用于 auth 组的登录
 		routerV1.POST("login", v1.Login)
+		//routerV1.POST("upload", v1.UpLoad)
 	}
 
 	r.Run(utils.HttpPort)

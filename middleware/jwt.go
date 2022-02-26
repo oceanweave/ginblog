@@ -109,6 +109,6 @@ func JwtToken() gin.HandlerFunc {
 		// 可以跨中间件取值
 		c.Set("username", key.Username)
 		//调用后续的处理函数  因为会有很多中间件  这表示继续调用下一个中间件
-		c.Next()
+		//c.Next()
 	}
 }
