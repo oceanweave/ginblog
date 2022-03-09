@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Admin from '../views/Admin.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +21,18 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // ...
+  // 返回 false 以取消导航
+  const token =  window.sessionStorage.getItem('token')
+  if (to.path == '/login') return next()
+  if (!token && to.path == '/admin') {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
