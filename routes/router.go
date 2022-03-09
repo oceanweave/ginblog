@@ -14,6 +14,8 @@ func InitRouter() {
 	r.Use(middleware.Logger())
 	// 猜测适用于 err  recovery  避免日志的错误影响后面
 	r.Use(gin.Recovery())
+	// 跨域配置
+	r.Use(middleware.Cors())
 	// 需要 bear token 的路由组
 	auth := r.Group("api/v1")
 	auth.Use(middleware.JwtToken())
