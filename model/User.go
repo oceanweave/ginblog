@@ -14,6 +14,7 @@ type User struct {
 	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=6,max=20" label:"密码"`
 	// 大于等于2 之前默认0是管理员 1 是阅读者 但在 validate中 默认0是空值
 	// 所以这里 gte=2 就是大于等于2，要所有都+1 就是 1是管理员  2是阅读者
+	// 这里配置就是要求 添加用户配置 role 要 大于等于 2  就是默认是 阅读者
 	Role int `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" label:"角色码"`
 }
 
@@ -108,7 +109,8 @@ func CheckLogin(username string, password string) int {
 	if ScryptPw(password) != user.Password {
 		return errmsg.ERROR_PASSWORD_WRONG
 	}
-	if user.Role != 0 {
+	// Role 为1 才为管理员  只有管理员才能登陆
+	if user.Role != 1 {
 		return errmsg.ERROR_USER_NO_RIGHT
 	}
 	return errmsg.SUCCES

@@ -24,6 +24,7 @@ func AddUser(c *gin.Context) {
 	_ = c.ShouldBindJSON(&data)
 	// 添加用户前进行 信息验证
 	// 通过设置 model User 的 validate tag 进行格式要求，最小不能少于 最大不能多于多少个字符等
+	// 利用设置的 validate 字段进行验证
 	msg, code = validator.Validate(&data)
 	if code != errmsg.SUCCES {
 		c.JSON(http.StatusOK, gin.H{
