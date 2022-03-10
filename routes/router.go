@@ -12,6 +12,8 @@ func InitRouter() {
 	r := gin.New()
 	// 日志中间件  记录信息等
 	r.Use(middleware.Logger())
+	// 跨域
+	r.Use(middleware.Cors())
 	// 猜测适用于 err  recovery  避免日志的错误影响后面
 	r.Use(gin.Recovery())
 	// 需要 bear token 的路由组
