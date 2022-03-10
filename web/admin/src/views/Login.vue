@@ -10,7 +10,9 @@
                 </a-form-model-item>
 
                 <a-form-model-item prop="password">
-                    <a-input v-model="formdata.password" placeholder="请输入密码" type="password">
+                    <a-input v-model="formdata.password" placeholder="请输入密码" type="password"
+                    v-on:keyup.enter="login">
+                    <!--  v-on:keyup.enter="login" 输入回车相当于登陆 -->
                         <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
                     </a-input>
                 </a-form-model-item>
